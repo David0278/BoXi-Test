@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <POU Name="Test_SDO" Id="{c89e8d61-0809-4f11-9f83-af35fc6cd839}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Test_SDO
+VAR
+	fbSdoRead  : FB_EcCoESdoRead;
+    sNetId     : T_AmsNetId := '5.112.215.215.2.1';
+    bExecute   : BOOL;
+    nSlaveAddr : UINT := 1002;
+    nIndex     : WORD := 16#4106;
+    nSubIndex  : BYTE :=0;
+    vendorId   : UDINT;
+    bError     : BOOL;
+    nErrId     : UDINT;
+	
+	fbSdoWrite 	: FB_EcCoESdoWrite;
+    sNetId1     : T_AmsNetId := '5.112.215.215.2.1'; (* NetId of EtherCAT Master *)
+    nSlaveAddr1 : UINT := 1002; (* Port Number of EtherCAT Slave *)
+    nIndex1     : WORD := 16#5F04; (* CoE Object Index *)
+    nSubIndex1  : BYTE := 0; (* Subindex of CoE Object *)
+    nValue1     : UINT := 0; (* variable to be written to the CoE Object *)(*1为编码器报警清除，2为编码器圈数清零*)
+    bExecute1   : BOOL; (* rising edge starts writing to the CoE Object *)
+    bError1     : BOOL;
+    nErrId1     : UDINT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbSdoRead(
+	sNetId:= sNetId,
+	nSlaveAddr :=nSlaveAddr, 
+	nIndex:=nIndex, 
+	nSubIndex :=nSubIndex, 
+	pDstBuf:= ADR(vendorId), 
+	cbBufLen:=SIZEOF(vendorId),
+	bExecute:=bExecute
+);
+
+bError:=fbSdoRead.bError;
+nErrId:=fbSdoRead.nErrId;
+
+fbSdoWrite(
+    sNetId     := sNetId1,
+    nSlaveAddr := nSlaveAddr1,
+    nIndex     := nIndex1,
+    nSubIndex  := nSubIndex1,
+    pSrcBuf    := ADR(nValue1),
+    cbBufLen   := SIZEOF(nValue1),
+    bExecute   := bExecute1
+);]]></ST>
+    </Implementation>
+    <LineIds Name="Test_SDO">
+      <LineId Id="15" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="18" Count="5" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="36" Count="8" />
+      <LineId Id="35" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

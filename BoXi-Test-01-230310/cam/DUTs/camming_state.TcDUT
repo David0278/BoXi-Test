@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.10">
+  <DUT Name="camming_state" Id="{e88c8d8a-a2e2-452f-a4a3-dd1e940acd53}">
+    <Declaration><![CDATA[
+TYPE camming_state :
+(
+	state_init,
+	state_power,
+	state_forward,
+	state_pre_table1,
+	state_camming1,
+	state_pre_table2,
+	state_table1,
+	camming_status,
+	state_error,
+	state_reset
+)INT;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
